@@ -138,7 +138,7 @@ export default function SystemConfig() {
       label: 'Notificaciones Habilitadas',
       value: true,
       type: 'boolean',
-      category: 'notifications',
+      category: 'notificaciones',
       description: 'Permitir envío de notificaciones push'
     },
     {
@@ -146,7 +146,7 @@ export default function SystemConfig() {
       label: 'Máximo Notificaciones por Día',
       value: '10',
       type: 'number',
-      category: 'notifications',
+      category: 'notificaciones',
       description: 'Límite diario de notificaciones por usuario'
     },
     
@@ -267,7 +267,7 @@ export default function SystemConfig() {
           label: 'Notificaciones Habilitadas',
           value: true,
           type: 'boolean',
-          category: 'notifications',
+          category: 'notificaciones',
           description: 'Permitir envío de notificaciones push'
         },
         {
@@ -275,7 +275,7 @@ export default function SystemConfig() {
           label: 'Máximo Notificaciones por Día',
           value: '10',
           type: 'number',
-          category: 'notifications',
+          category: 'notificaciones',
           description: 'Límite diario de notificaciones por usuario'
         },
         
@@ -358,7 +358,7 @@ export default function SystemConfig() {
     { key: 'appearance', label: 'Apariencia', icon: Palette, color: 'purple' },
     { key: 'security', label: 'Seguridad', icon: Shield, color: 'red' },
     { key: 'email', label: 'Email', icon: Mail, color: 'green' },
-    { key: 'notifications', label: 'Notificaciones', icon: Bell, color: 'yellow' },
+    { key: 'notificaciones', label: 'Notificaciones', icon: Bell, color: 'yellow' },
     { key: 'limits', label: 'Límites', icon: Database, color: 'gray' }
   ];
 

@@ -38,7 +38,7 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
 
       // Get additional user data from our database
       const { data: userData, error: userError } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('*')
         .eq('email', user.email)
         .single();
@@ -59,20 +59,17 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
         const newUser = {
           id: user.id,
           email: user.email,
-          first_name: user.user_metadata?.first_name || user.email.split('@')[0],
-          last_name: user.user_metadata?.last_name || '',
+          first_name: user.user_metadata?.nombres || user.email?.split('@')[0],
+          last_name: user.user_metadata?.apellidos || '',
           role: defaultRole,
           institution_id: null,
-          venue_ids: [],
-          group_ids: [],
-          permissions: {},
           avatar_url: user.user_metadata?.avatar_url,
-          phone: user.user_metadata?.phone,
+          phone: user.user_metadata?.telefono,
           is_active: true
         };
 
         const { error: insertError } = await supabaseAdmin
-          .from('users')
+          .from('colaboradores')
           .insert(newUser);
 
         if (insertError) {
@@ -81,19 +78,17 @@ export const authenticate = async (req: AuthenticatedRequest, res: Response, nex
 
         req.user = {
           id: user.id,
-          email: user.email,
+          email: user.email || '',
           role: defaultRole,
           institutionId: undefined,
-          venueIds: [],
           groupIds: []
         };
       } else {
         req.user = {
           id: userData.id,
-          email: userData.email,
+          email: userData.email || '',
           role: userData.role,
           institutionId: userData.institution_id,
-          venueIds: userData.venue_ids || [],
           groupIds: userData.group_ids || []
         };
       }
@@ -133,7 +128,7 @@ export const authorize = (allowedRoles: string[]) => {
     // For custom roles, check if user has proper permissions
     try {
       const { data: userData, error } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('role, permissions')
         .eq('id', req.user.id)
         .single();
@@ -185,7 +180,7 @@ export const authorizeWithPermissions = (module: string, action: string) => {
     try {
       // Get user data including custom role permissions
       const { data: userData, error } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('role, permissions')
         .eq('id', req.user.id)
         .single();
@@ -204,23 +199,23 @@ export const authorizeWithPermissions = (module: string, action: string) => {
         return;
       }
       
-      // Admin sede también tiene permisos completos
-      if (userData.role === 'admin_sede') {
-        next();
-        return;
-      }
+      // // Admin sede también tiene permisos completos
+      // if (userData.role === 'admin_sede') {
+      //   next();
+      //   return;
+      // }
 
       // Check if user has a custom role with specific permissions
-      if (userData.permissions?.custom_role) {
+      if (userData.permissions?.role) {
         // Get custom role permissions from custom_roles table
         const { data: customRoleData } = await supabaseAdmin
-          .from('custom_roles')
-          .select('permissions')
-          .eq('name', userData.permissions.custom_role)
+          .from('roles')
+          .select('permisos')
+          .eq('name', userData.permissions.role)
           .single();
 
-        if (customRoleData && customRoleData.permissions[module] && 
-            customRoleData.permissions[module][action]) {
+        if (customRoleData && customRoleData.permisos[module] && 
+            customRoleData.permisos[module][action]) {
           next();
           return;
         }
@@ -228,14 +223,14 @@ export const authorizeWithPermissions = (module: string, action: string) => {
 
       // Default permissions based on basic roles
       const defaultPermissions = {
-        'admin_sede': ['institutions', 'venues', 'users', 'groups', 'athletes', 'events'],
-        'entrenador': ['groups', 'athletes', 'events', 'attendance'],
-        'secretario': ['athletes', 'events', 'publications', 'notifications'],
-        'representante': ['athletes', 'events'],
-        'deportista': ['events', 'publications']
+        'admin_sede': ['instituciones', 'colaboradores', 'grupos', 'deportistas', 'eventos'],
+        'entrenador': ['grupos', 'deportistas', 'eventos', 'asistencias'],
+        'secretario': ['deportistas', 'eventos', 'publicaciones', 'notificaciones'],
+        'representante': ['deportistas', 'eventos'],
+        'deportista': ['eventos', 'publicaciones']
       };
 
-      if (defaultPermissions[userData.role]?.includes(module)) {
+      if (defaultPermissions[userData.role as keyof typeof defaultPermissions]?.includes(module)) {
         next();
         return;
       }

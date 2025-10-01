@@ -435,7 +435,7 @@ export default function UserManagement() {
           </p>
         </div>
         
-        {hasPermission('users', 'create') && (
+        {hasPermission('colaboradores', 'create') && (
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button data-testid="button-create-user">
@@ -1421,7 +1421,7 @@ export default function UserManagement() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      {hasPermission('users', 'edit') && (
+                      {hasPermission('colaboradores', 'edit') && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -1442,7 +1442,7 @@ export default function UserManagement() {
                           )}
                         </Button>
                       )}
-                      {hasPermission('users', 'edit') && (
+                      {hasPermission('colaboradores', 'edit') && (
                         <Button
                           variant="outline"
                           size="sm"
@@ -1453,7 +1453,7 @@ export default function UserManagement() {
                           Editar
                         </Button>
                       )}
-                      {hasPermission('users', 'delete') && (
+                      {hasPermission('colaboradores', 'delete') && (
                         <Button
                           variant="destructive"
                           size="sm"

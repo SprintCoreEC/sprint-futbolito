@@ -32,7 +32,7 @@ export class SupabaseConnectionChecker {
     try {
       // Intenta hacer una consulta simple
       const { data, error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .select('id')
         .limit(1);
       
@@ -56,7 +56,7 @@ export class SupabaseConnectionChecker {
         status: 'success',
         message: `Conexión exitosa a Supabase (${responseTime}ms)`,
         details: {
-          tablesFound: ['institutions'],
+          tablesFound: ['instituciones'],
           tablesCount: data ? data.length : 0,
           responseTime
         }
@@ -83,15 +83,17 @@ export class SupabaseConnectionChecker {
    */
   async checkAllTables(): Promise<ConnectionStatus> {
     const requiredTables = [
-      'institutions',
-      'venues', 
-      'users',
-      'groups',
-      'athletes',
-      'events',
-      'attendance',
-      'publications',
-      'notifications'
+      'instituciones',
+      'colaboradores',
+      'grupos',
+      'deportistas',
+      'eventos',
+      'asistencias',
+      'publicaciones',
+      'notificaciones',
+      'pagos_ordenes',
+      'posiciones',
+      'roles',
     ];
     
     const startTime = performance.now();
@@ -166,7 +168,7 @@ export class SupabaseConnectionChecker {
     try {
       // Realizar múltiples consultas para medir rendimiento promedio
       const promises = Array.from({ length: 3 }, () => 
-        supabaseAdmin.from('institutions').select('id').limit(1)
+        supabaseAdmin.from('instituciones').select('id').limit(1)
       );
       
       await Promise.all(promises);
@@ -189,7 +191,7 @@ export class SupabaseConnectionChecker {
         status,
         message,
         details: {
-          tablesFound: ['institutions'],
+          tablesFound: ['instituciones'],
           tablesCount: 1,
           responseTime
         }

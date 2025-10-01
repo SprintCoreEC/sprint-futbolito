@@ -13,13 +13,13 @@ interface ModulePermissions {
 
 // Default permissions based on roles
 const defaultPermissions: Record<string, string[]> = {
-  'super_admin': ['dashboard', 'institutions', 'venues', 'users', 'groups', 'athletes', 'events', 'publications', 'notifications', 'attendance', 'reports'],
-  'admin_institucion': ['dashboard', 'institutions', 'venues', 'users', 'groups', 'athletes', 'events', 'publications', 'notifications', 'attendance', 'reports'],
-  'admin_sede': ['dashboard', 'institutions', 'venues', 'users', 'groups', 'athletes', 'events', 'publications', 'notifications', 'attendance'],
-  'entrenador': ['dashboard', 'groups', 'athletes', 'events', 'attendance'],
-  'secretario': ['dashboard', 'athletes', 'events', 'publications', 'notifications'],
-  'representante': ['dashboard', 'athletes', 'events'],
-  'deportista': ['dashboard', 'events', 'publications']
+  'super_admin': ['dashboard', 'instituciones', 'venues', 'colaboradores', 'grupos', 'deportistas', 'eventos', 'publicaciones', 'notificaciones', 'asistencias', 'reports'],
+  'admin_institucion': ['dashboard', 'instituciones', 'venues', 'colaboradores', 'grupos', 'deportistas', 'eventos', 'publicaciones', 'notificaciones', 'asistencias', 'reports'],
+  'admin_sede': ['dashboard', 'instituciones', 'venues', 'colaboradores', 'grupos', 'deportistas', 'eventos', 'publicaciones', 'notificaciones', 'asistencias'],
+  'entrenador': ['dashboard', 'grupos', 'deportistas', 'eventos', 'asistencias'],
+  'secretario': ['dashboard', 'deportistas', 'eventos', 'publicaciones', 'notificaciones'],
+  'representante': ['dashboard', 'deportistas', 'eventos'],
+  'deportista': ['dashboard', 'eventos', 'publicaciones']
 };
 
 export function usePermissions() {

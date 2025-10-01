@@ -123,14 +123,14 @@ export default function InstitutionSpecificDashboard() {
           {/* Left Column - Main Content */}
           <div className="lg:col-span-2 space-y-8">
             <QuickActions />
-            {hasModuleAccess('publications') && <RecentPublications />}
+            {hasModuleAccess('publicaciones') && <RecentPublications />}
           </div>
 
           {/* Right Column - Sidebar */}
           <div className="space-y-8">
-            {hasModuleAccess('events') && <UpcomingEvents />}
-            {hasModuleAccess('attendance') && <AttendanceSummary />}
-            {hasModuleAccess('notifications') && <NotificationCenter />}
+            {hasModuleAccess('eventos') && <UpcomingEvents />}
+            {hasModuleAccess('asistencias') && <AttendanceSummary />}
+            {hasModuleAccess('notificaciones') && <NotificationCenter />}
           </div>
         </div>
       </div>

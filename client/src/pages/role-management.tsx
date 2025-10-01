@@ -384,7 +384,7 @@ export default function RoleManagement() {
           </p>
         </div>
         
-        {hasPermission('users', 'create') && (
+        {hasPermission('colaboradores', 'create') && (
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button data-testid="button-create-role">
@@ -526,7 +526,7 @@ export default function RoleManagement() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        {hasPermission('users', 'edit') && (
+                        {hasPermission('colaboradores', 'edit') && (
                           <Button
                             variant="outline"
                             size="sm"
@@ -547,7 +547,7 @@ export default function RoleManagement() {
                             )}
                           </Button>
                         )}
-                        {hasPermission('users', 'delete') && (
+                        {hasPermission('colaboradores', 'delete') && (
                           <Button
                             variant="destructive"
                             size="sm"

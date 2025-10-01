@@ -37,7 +37,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       let query = supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -224,7 +224,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Check if user already exists first
       const { data: existingUser } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('id')
         .eq('email', email)
         .single();
@@ -269,7 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Check for duplicate phone number
       if (phone) {
         const { data: existingUserWithPhone } = await supabaseAdmin
-          .from('users')
+          .from('colaboradores')
           .select('id')
           .eq('phone', phone)
           .single();
@@ -363,7 +363,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Create user directly in database with Supabase for better performance
       const { data: dbUser, error: dbError } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .insert(userData)
         .select()
         .single();
@@ -389,7 +389,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.error('Colaborador creation error:', colaboradorError);
           // If colaborador creation fails, delete the user to maintain consistency
           await supabaseAdmin.auth.admin.deleteUser(data.user.id);
-          await supabaseAdmin.from('users').delete().eq('id', dbUser.id);
+          await supabaseAdmin.from('colaboradores').delete().eq('id', dbUser.id);
           
           throw new Error(`Usuario creado pero falló al crear información de colaborador: ${colaboradorError.message}`);
         }
@@ -427,7 +427,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get current user data first
       const { data: currentUser, error: getCurrentError } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('role, institution_id')
         .eq('id', id)
         .single();
@@ -519,7 +519,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Check for duplicate phone number (excluding current user)
       if (userUpdates.phone) {
         const { data: existingUserWithPhone } = await supabaseAdmin
-          .from('users')
+          .from('colaboradores')
           .select('id')
           .eq('phone', userUpdates.phone)
           .neq('id', id)
@@ -552,7 +552,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Update user in database
       const { data: updatedUser, error: updateError } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .update({ ...userUpdates, updated_at: new Date().toISOString() })
         .eq('id', id)
         .select()
@@ -734,7 +734,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // First delete from users table
       const { error: userError } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .delete()
         .eq('id', id);
       
@@ -909,7 +909,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Then count users with this custom role
       const { count, error } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('*', { count: 'exact', head: true })
         .contains('permissions', { custom_role: roleData.name });
       
@@ -945,7 +945,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Then get users with this custom role
       const { data: users, error } = await supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('id, first_name, last_name, email')
         .contains('permissions', { custom_role: roleData.name });
       
@@ -1292,7 +1292,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       let query = supabaseAdmin
-        .from('groups')
+        .from('grupos')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -1353,7 +1353,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       let query = supabaseAdmin
-        .from('athletes')
+        .from('deportistas')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -1399,7 +1399,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       const { data, error } = await supabaseAdmin
-        .from('events')
+        .from('eventos')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -1438,7 +1438,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       const { data, error } = await supabaseAdmin
-        .from('publications')
+        .from('publicaciones')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -1476,7 +1476,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { supabaseAdmin } = await import("./services/supabase");
       
       const { data, error } = await supabaseAdmin
-        .from('notifications')
+        .from('notificaciones')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -1513,7 +1513,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get institutions with their user counts
       const { data: institutions, error: instError } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .select(`
           id, 
           is_active, 
@@ -1526,7 +1526,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get events with attendance data
       const { data: events, error: eventsError } = await supabaseAdmin
-        .from('events')
+        .from('eventos')
         .select(`
           id,
           start_time,
@@ -1543,7 +1543,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (venuesError && venuesError.code !== 'PGRST116') throw venuesError;
       
       const { data: groups, error: groupsError } = await supabaseAdmin
-        .from('groups')
+        .from('grupos')
         .select('id, institution_id');
       
       if (groupsError && groupsError.code !== 'PGRST116') throw groupsError;

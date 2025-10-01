@@ -102,7 +102,7 @@ export class DrizzleStorage implements IStorage {
   async getInstitutions(): Promise<Institution[]> {
     try {
       const { data, error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -130,7 +130,7 @@ export class DrizzleStorage implements IStorage {
   async getInstitution(id: string): Promise<Institution | undefined> {
     try {
       const { data, error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .select('*')
         .eq('id', id)
         .single();
@@ -149,7 +149,7 @@ export class DrizzleStorage implements IStorage {
   async createInstitution(institution: InsertInstitution): Promise<Institution> {
     try {
       const { data, error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .insert({
           name: institution.name,
           description: institution.description,
@@ -199,7 +199,7 @@ export class DrizzleStorage implements IStorage {
       if (updates.isActive !== undefined) updateData.is_active = updates.isActive;
       
       const { data, error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .update(updateData)
         .eq('id', id)
         .select()
@@ -232,7 +232,7 @@ export class DrizzleStorage implements IStorage {
   async deleteInstitution(id: string): Promise<void> {
     try {
       const { error } = await supabaseAdmin
-        .from('institutions')
+        .from('instituciones')
         .delete()
         .eq('id', id);
       
@@ -275,7 +275,7 @@ export class DrizzleStorage implements IStorage {
   async getUsers(institutionId?: string): Promise<User[]> {
     try {
       let query = supabaseAdmin
-        .from('users')
+        .from('colaboradores')
         .select('*')
         .eq('is_active', true);
       
@@ -458,10 +458,10 @@ export class DrizzleStorage implements IStorage {
     try {
       // Use simple Supabase queries to avoid timeouts
       const [usersResult, institutionsResult, venuesResult, eventsResult] = await Promise.all([
-        supabaseAdmin.from('users').select('id', { count: 'exact', head: true }),
-        supabaseAdmin.from('institutions').select('id', { count: 'exact', head: true }),
+        supabaseAdmin.from('colaboradores').select('id', { count: 'exact', head: true }),
+        supabaseAdmin.from('instituciones').select('id', { count: 'exact', head: true }),
         supabaseAdmin.from('venues').select('id', { count: 'exact', head: true }),
-        supabaseAdmin.from('events').select('id', { count: 'exact', head: true })
+        supabaseAdmin.from('eventos').select('id', { count: 'exact', head: true })
       ]);
 
       return {
